@@ -37,9 +37,8 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
   const dragStartPos = useRef({ x: 0, y: 0 })
   const iconStartPos = useRef({ x: 0, y: 0 })
   const hasMoved = useRef(false)
-  const iconRef = useRef<HTMLDivElement>(null)
   const clickTimeout = useRef<number | null>(null)
-  
+
   const hasBeenOpened = useRef(false)
   const trashClickCount = useRef(0)
   const [trashLocked, setTrashLocked] = useState(false)
@@ -49,13 +48,13 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (isAppLocked) return
-    
+
     e.preventDefault()
     e.stopPropagation()
-    
+
     setSelectedIcon(id)
     hasMoved.current = false
-    
+
     dragStartPos.current = { x: e.clientX, y: e.clientY }
     iconStartPos.current = { x: position.x, y: position.y }
 
@@ -65,13 +64,12 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
       if (!hasMoved.current) {
         if (id === 'trash') {
           trashClickCount.current += 1
-          
+
           if (trashClickCount.current <= 3) {
             openWindow(id, label)
-            
             const messageIndex = trashClickCount.current - 1
             const message = TRASH_MESSAGES[messageIndex]
-            
+
             if (phase === 'idle') {
               showMessage(message, 'interruptible')
             } else {
@@ -79,7 +77,7 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
                 showMessage(message, 'interruptible')
               }, 500)
             }
-            
+
             if (trashClickCount.current >= 3) {
               setTimeout(() => {
                 setTrashLocked(true)
@@ -89,7 +87,7 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
           }
         } else {
           openWindow(id, label)
-          
+
           if (!hasBeenOpened.current && FIRST_OPEN_MESSAGES[id]) {
             hasBeenOpened.current = true
             if (phase === 'idle') {
@@ -112,7 +110,7 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
     const handleMouseMove = (moveEvent: MouseEvent) => {
       const deltaX = moveEvent.clientX - dragStartPos.current.x
       const deltaY = moveEvent.clientY - dragStartPos.current.y
-      
+
       if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
         hasMoved.current = true
         if (clickTimeout.current) {
@@ -120,14 +118,14 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
           clickTimeout.current = null
         }
       }
-      
+
       if (hasMoved.current) {
         const newX = iconStartPos.current.x + deltaX
         const newY = iconStartPos.current.y + deltaY
-        
-        const clampedX = Math.max(0, Math.min(newX, window.innerWidth - 120))
-        const clampedY = Math.max(0, Math.min(newY, window.innerHeight - 160))
-        
+
+        const clampedX = Math.max(0, Math.min(newX, window.innerWidth - 100))
+        const clampedY = Math.max(0, Math.min(newY, window.innerHeight - 140))
+
         setPosition(id, clampedX, clampedY)
       }
     }
@@ -136,7 +134,7 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
       setIsDragging(false)
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
-      
+
       setTimeout(() => {
         hasMoved.current = false
       }, 100)
@@ -148,7 +146,6 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
 
   return (
     <motion.div
-      ref={iconRef}
       animate={{
         scale: isDragging ? 1.06 : 1,
         x: position.x,
@@ -166,13 +163,13 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '8px',
+        gap: '6px',
         cursor: isDragging ? 'grabbing' : isAppLocked ? 'not-allowed' : 'pointer',
         opacity: isAppLocked ? 0.4 : 1,
         filter: isAppLocked ? 'grayscale(100%)' : 'none',
         userSelect: 'none',
-        width: '110px',
-        padding: '12px 8px',
+        width: '90px',
+        padding: '10px 6px',
         borderRadius: '6px',
         position: 'absolute',
         zIndex: isDragging ? 50 : isSelected ? 5 : 1,
@@ -186,8 +183,8 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
       }}
     >
       <div style={{
-        width: '80px',
-        height: '80px',
+        width: '64px',
+        height: '64px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -204,11 +201,11 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
             objectFit: 'contain',
             imageRendering: 'pixelated',
             filter: isAppLocked
-              ? 'grayscale(100%) drop-shadow(0 3px 6px rgba(0,0,0,0.4))'
-              : 'drop-shadow(0 3px 6px rgba(0,0,0,0.4))',
+              ? 'grayscale(100%) drop-shadow(0 2px 4px rgba(0,0,0,0.4))'
+              : 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
           }}
         />
-        
+
         {!isAppLocked && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -229,7 +226,7 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            fontSize: '28px',
+            fontSize: '24px',
             opacity: 0.8,
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
           }}>
@@ -237,21 +234,21 @@ export default function DesktopIcon({ id, label, isUnlocked }: DesktopIconProps)
           </div>
         )}
       </div>
-      
+
       <span style={{
-        fontSize: '12px',
+        fontSize: '11px',
         color: isSelected ? '#fff' : 'rgba(255,255,255,0.9)',
         textShadow: isSelected
-          ? '0 0 8px rgba(201, 169, 110, 0.6), 1px 1px 3px rgba(0,0,0,0.9)'
-          : '1px 1px 3px rgba(0,0,0,0.9)',
+          ? '0 0 6px rgba(201, 169, 110, 0.6), 1px 1px 2px rgba(0,0,0,0.9)'
+          : '1px 1px 2px rgba(0,0,0,0.9)',
         textAlign: 'center',
         wordBreak: 'break-word',
-        maxWidth: '100px',
+        maxWidth: '82px',
         lineHeight: '1.3',
         background: isSelected
           ? 'rgba(30, 30, 60, 0.85)'
           : 'rgba(0, 0, 0, 0.4)',
-        padding: '3px 6px',
+        padding: '2px 5px',
         borderRadius: '3px',
         pointerEvents: 'none',
         fontWeight: isSelected ? 'bold' : 'normal',
