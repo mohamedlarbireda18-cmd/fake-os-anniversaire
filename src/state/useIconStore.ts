@@ -16,9 +16,9 @@ interface IconState {
 const defaultPositions: Record<string, IconPosition> = {
   conversations: { x: 40, y: 30 },
   photos: { x: 40, y: 120 },
-  music: { x: 40, y: 210 },
-  notes: { x: 40, y: 300 },
-  trash: { x: 40, y: 390 },
+  music: { x: 40, y: 230 },
+  notes: { x: 40, y: 320 },
+  trash: { x: 40, y: 410 },
   final: { x: 200, y: 250 },
 }
 
