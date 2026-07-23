@@ -1,0 +1,319 @@
+$bg-main: #F7F1E9;
+$bg-sidebar: #EEDFD7;
+$bg-card: #FFF8F2;
+$pink-accent: #F5C8D8;
+$gold: #E8B56A;
+$text-dark: #4F433F;
+$text-muted: #8B766E;
+$border: #CBAE9D;
+
+.photos-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: $bg-main;
+  font-family: 'Courier New', monospace;
+  color: $text-dark;
+  overflow: hidden;
+  user-select: none;
+}
+
+.photos-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 10px);
+  padding: clamp(10px, 1.5vh, 14px) clamp(14px, 2vw, 18px);
+  background: linear-gradient(180deg, #FFF8F2, $bg-main);
+  border-bottom: 2px solid $border;
+  flex-shrink: 0;
+}
+
+.photos-header-icon { font-size: clamp(18px, 2.5vw, 22px); }
+
+.photos-title {
+  font-size: clamp(12px, 1.6vw, 14px);
+  font-weight: bold;
+  margin: 0;
+}
+
+.photos-subtitle {
+  font-size: clamp(9px, 1.1vw, 10px);
+  color: $text-muted;
+  margin: 2px 0 0;
+  font-style: italic;
+}
+
+// Grille
+.photos-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: clamp(10px, 1.5vw, 16px);
+  padding: clamp(12px, 2vh, 20px);
+  overflow-y: auto;
+  align-content: start;
+
+  &::-webkit-scrollbar { width: 8px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: $border;
+    border-radius: 4px;
+  }
+}
+
+.photo-card {
+  background: $bg-card;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(.locked) {
+    border-color: rgba($pink-accent, 0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  &.locked {
+    cursor: pointer;
+    filter: grayscale(40%);
+  }
+}
+
+.photo-thumb {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: darken($bg-sidebar, 5%);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.5s ease;
+  }
+
+  .locked & img {
+    filter: blur(10px) brightness(0.7);
+  }
+}
+
+.photo-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+
+  .lock-icon {
+    font-size: clamp(24px, 4vw, 32px);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  }
+}
+
+.photo-info {
+  padding: clamp(8px, 1.2vh, 10px) clamp(10px, 1.2vw, 12px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.photo-title {
+  font-size: clamp(10px, 1.3vw, 11px);
+  font-weight: bold;
+}
+
+.photo-date {
+  font-size: clamp(8px, 1vw, 9px);
+  color: $text-muted;
+}
+
+// Visionneuse
+.photo-viewer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.photo-viewer {
+  background: $bg-main;
+  border: 3px solid $border;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 95vw;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+
+.viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #FFF8F2, $bg-main);
+  border-bottom: 2px solid $border;
+  flex-shrink: 0;
+
+  h3 {
+    font-size: 13px;
+    margin: 0;
+  }
+
+  p {
+    font-size: 10px;
+    color: $text-muted;
+    margin: 2px 0 0;
+    font-style: italic;
+  }
+}
+
+.viewer-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.viewer-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid $border;
+  background: $bg-card;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba($gold, 0.2);
+  }
+}
+
+.viewer-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid $border;
+  background: $bg-card;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-dark;
+
+  &:hover {
+    background: rgba($pink-accent, 0.2);
+  }
+}
+
+.viewer-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: darken($bg-main, 5%);
+  min-height: 0;
+  cursor: pointer;
+  position: relative;
+  padding: 12px;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid rgba($border, 0.4);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+}
+
+// Légende
+.viewer-caption {
+  padding: 14px 18px;
+  border-top: 2px solid rgba($border, 0.4);
+  background: rgba($gold, 0.04);
+  overflow: hidden;
+
+  .caption-line {
+    width: 40px;
+    height: 2px;
+    background: $gold;
+    margin-bottom: 10px;
+    border-radius: 1px;
+  }
+
+  p {
+    font-size: 11px;
+    line-height: 1.7;
+    color: $text-dark;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .caption-hint {
+    font-size: 8px;
+    color: $text-muted;
+    margin-top: 8px;
+    font-style: normal;
+  }
+}
+
+.caption-hint-small {
+  font-size: 8px;
+  color: $text-muted;
+  font-style: italic;
+}
+
+.viewer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-top: 2px solid rgba($border, 0.4);
+  font-size: 9px;
+  color: $text-muted;
+  flex-shrink: 0;
+}
+
+.viewer-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.memory-badge {
+  font-size: 8px;
+  padding: 2px 8px;
+  background: rgba($gold, 0.15);
+  border: 1px solid rgba($gold, 0.4);
+  border-radius: 10px;
+  color: darken($gold, 15%);
+}
+
+// Footer
+.photos-footer {
+  padding: clamp(6px, 1vh, 8px) clamp(14px, 2vw, 18px);
+  border-top: 2px solid rgba($border, 0.4);
+  font-size: clamp(8px, 1vw, 9px);
+  color: $text-muted;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: $bg-sidebar;
+  flex-shrink: 0;
+
+  .footer-icon { font-size: clamp(8px, 1vw, 10px); }
+}
