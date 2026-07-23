@@ -12,10 +12,10 @@ export default function TrashApp() {
     }}>
       <span style={{ fontSize: '32px' }}>🗑️</span>
       <p style={{ fontSize: '13px', color: '#a09888' }}>
-        Trash est vide.
+        Trash is empty .
       </p>
       <p style={{ fontSize: '10px', color: '#555' }}>
-        Certains souvenirs ne s'effacent jamais vraiment.
+        Some memories never truly fade away.
       </p>
     </div>
   )
