@@ -15,11 +15,11 @@ interface IconState {
 
 const defaultPositions: Record<string, IconPosition> = {
   conversations: { x: 40, y: 30 },
-  photos: { x: 40, y: 160 },
-  music: { x: 40, y: 290 },
-  notes: { x: 40, y: 420 },
-  trash: { x: 40, y: 550 },
-  final: { x: 200, y: 290 },
+  photos: { x: 40, y: 120 },
+  music: { x: 40, y: 210 },
+  notes: { x: 40, y: 300 },
+  trash: { x: 40, y: 390 },
+  final: { x: 200, y: 250 },
 }
 
 export const useIconStore = create<IconState>((set, get) => ({
