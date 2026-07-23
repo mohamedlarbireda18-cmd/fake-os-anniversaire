@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePhotosStore } from '../../../state/usePhotosStore'
 import { useNovaStore } from '../../../state/useNovaStore'
@@ -56,7 +56,6 @@ export default function PhotosApp() {
 
   return (
     <div className="photos-app">
-      {/* Header */}
       <div className="photos-header">
         <div className="photos-header-icon">📷</div>
         <div className="photos-header-info">
@@ -65,7 +64,6 @@ export default function PhotosApp() {
         </div>
       </div>
 
-      {/* Grille de photos */}
       <div className="photos-grid">
         {photos.map((photo, index) => {
           const unlocked = isUnlocked(photo.id)
@@ -80,11 +78,7 @@ export default function PhotosApp() {
               onClick={() => handlePhotoClick(photo.id)}
             >
               <div className="photo-thumb">
-                <img
-                  src={photo.src}
-                  alt={photo.title}
-                  draggable={false}
-                />
+                <img src={photo.src} alt={photo.title} draggable={false} />
                 {!unlocked && (
                   <div className="photo-lock-overlay">
                     <span className="lock-icon">🔒</span>
@@ -100,7 +94,6 @@ export default function PhotosApp() {
         })}
       </div>
 
-      {/* Visionneuse plein écran */}
       <AnimatePresence>
         {viewerOpen && selectedPhoto && (
           <motion.div
@@ -118,26 +111,21 @@ export default function PhotosApp() {
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Barre de titre */}
               <div className="viewer-header">
                 <div className="viewer-header-info">
                   <h3>{selectedPhoto.title}</h3>
                   <p>{selectedPhoto.subtitle}</p>
                 </div>
                 <div className="viewer-actions">
-                  <button className="viewer-btn" onClick={handleDownload} title="Download">
-                    💾
-                  </button>
+                  <button className="viewer-btn" onClick={handleDownload} title="Download">💾</button>
                   <button className="viewer-close" onClick={handleCloseViewer}>✕</button>
                 </div>
               </div>
 
-              {/* Image */}
               <div className="viewer-image" onClick={handleImageClick}>
                 <img src={selectedPhoto.src} alt={selectedPhoto.title} draggable={false} />
               </div>
 
-              {/* Légende */}
               <AnimatePresence>
                 {showCaption && (
                   <motion.div
@@ -154,13 +142,10 @@ export default function PhotosApp() {
                 )}
               </AnimatePresence>
 
-              {/* Footer */}
               <div className="viewer-footer">
                 <span>{selectedPhoto.date}</span>
                 <div className="viewer-footer-right">
-                  {!showCaption && (
-                    <span className="caption-hint-small">Click image for caption</span>
-                  )}
+                  {!showCaption && <span className="caption-hint-small">Click image for caption</span>}
                   <span className="memory-badge">Memory Restored</span>
                 </div>
               </div>
@@ -169,7 +154,6 @@ export default function PhotosApp() {
         )}
       </AnimatePresence>
 
-      {/* Footer */}
       <div className="photos-footer">
         <span className="footer-icon">💾</span>
         <span>MemoryOS v1.0 — Photo Archive</span>

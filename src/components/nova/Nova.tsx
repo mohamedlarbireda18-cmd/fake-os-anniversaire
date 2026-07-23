@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState, useCallback } from 'react'
 import { useNovaStore } from '../../state/useNovaStore'
-import { useOSStore } from '../../state/useOSStore'
 
 const IDLE_DIALOGUES = [
   "Still exploring? Take your time.",
@@ -47,9 +46,6 @@ export default function Nova() {
   const setPhase = useNovaStore((state) => state.setPhase)
   const showMessage = useNovaStore((state) => state.showMessage)
 
-  const windows = useOSStore((state) => state.windows)
-  const isAnyWindowMaximized = windows.some((w) => w.isMaximized && w.isOpen)
-
   const [position, setPosition] = useState<'center' | 'corner'>('center')
 
   useEffect(() => {
@@ -76,7 +72,6 @@ export default function Nova() {
 
   const isCenter = position === 'center'
 
-  // Nova est TOUJOURS visible sauf quand elle disparaît (vanishing)
   const shouldShowNova =
     phase === 'talking' ||
     phase === 'reappearing' ||
@@ -86,7 +81,6 @@ export default function Nova() {
 
   return (
     <>
-      {/* Nova */}
       <AnimatePresence>
         {shouldShowNova && (
           <motion.div
@@ -120,7 +114,7 @@ export default function Nova() {
             }}
             onClick={handleClick}
             style={{
-              position: 'fixed',  // ← FIXED pour être au-dessus de tout
+              position: 'fixed',
               ...(isCenter
                 ? {
                     bottom: '200px',
@@ -131,7 +125,7 @@ export default function Nova() {
                     bottom: '120px',
                     right: '100px',
                   }),
-              zIndex: 99998,  // ← Très haut
+              zIndex: 99998,
               pointerEvents: (phase === 'talking' || phase === 'idle') ? 'auto' : 'none',
               cursor: (phase === 'talking' || phase === 'idle') ? 'pointer' : 'default',
             }}
@@ -207,7 +201,6 @@ export default function Nova() {
         )}
       </AnimatePresence>
 
-      {/* Bulle - TOUJOURS visible, même en plein écran */}
       <AnimatePresence>
         {isVisible && currentMessage && phase === 'talking' && (
           <motion.div
@@ -217,13 +210,13 @@ export default function Nova() {
             transition={{ duration: 0.4, ease: 'easeOut' }}
             onClick={handleClick}
             style={{
-              position: 'fixed',  // ← FIXED
+              position: 'fixed',
               ...(isCenter
                 ? { bottom: '310px', left: '50%', transform: 'translateX(-50%)' }
                 : { bottom: '160px', right: '210px' }),
               maxWidth: '380px',
               cursor: 'pointer',
-              zIndex: 99999,  // ← Encore plus haut que Nova
+              zIndex: 99999,
             }}
           >
             <div style={{

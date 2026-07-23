@@ -19,7 +19,7 @@ interface OSState {
   highestZIndex: number
 }
 
-export const useOSStore = create<OSState>((set, get) => ({
+export const useOSStore = create<OSState>((set) => ({
   windows: [
     { id: 'conversations', title: 'Conversations', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
     { id: 'photos', title: 'Photos', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
@@ -29,7 +29,7 @@ export const useOSStore = create<OSState>((set, get) => ({
     { id: 'trash', title: 'Trash', isOpen: false, isMinimized: false, isMaximized: false, zIndex: 0 },
   ],
   highestZIndex: 0,
-  
+
   openWindow: (id, title) => {
     set((state) => ({
       highestZIndex: state.highestZIndex + 1,
@@ -40,7 +40,7 @@ export const useOSStore = create<OSState>((set, get) => ({
       ),
     }))
   },
-  
+
   closeWindow: (id) => {
     set((state) => ({
       windows: state.windows.map((w) =>
@@ -48,7 +48,7 @@ export const useOSStore = create<OSState>((set, get) => ({
       ),
     }))
   },
-  
+
   minimizeWindow: (id) => {
     set((state) => ({
       windows: state.windows.map((w) =>
@@ -64,7 +64,7 @@ export const useOSStore = create<OSState>((set, get) => ({
       ),
     }))
   },
-  
+
   focusWindow: (id) => {
     set((state) => ({
       highestZIndex: state.highestZIndex + 1,

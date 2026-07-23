@@ -13,7 +13,6 @@ export default function MusicApp() {
   const hasEverPlayed = useMusicStore((state) => state.hasEverPlayed)
   const play = useMusicStore((state) => state.play)
   const pause = useMusicStore((state) => state.pause)
-  const stop = useMusicStore((state) => state.stop)
   const setVolume = useMusicStore((state) => state.setVolume)
   const setHasEverPlayed = useMusicStore((state) => state.setHasEverPlayed)
   const backgroundAudio = useMusicStore((state) => state.backgroundAudio)
@@ -29,18 +28,15 @@ export default function MusicApp() {
 
   const currentTrack = tracks.find((t) => t.id === currentTrackId)
 
-  // Créer ou récupérer l'élément audio persistant
   useEffect(() => {
     const existingAudio = backgroundAudio
 
     if (existingAudio) {
-      // Réutiliser l'audio existant (garde la position)
       audioRef.current = existingAudio
       setAudioLoaded(true)
       setDuration(existingAudio.duration || 0)
       setCurrentTime(existingAudio.currentTime || 0)
     } else {
-      // Créer un nouvel audio
       const audio = new Audio()
       audio.preload = 'auto'
       audioRef.current = audio
@@ -89,13 +85,11 @@ export default function MusicApp() {
     }
   }, [])
 
-  // Charger la source seulement si elle change
   useEffect(() => {
     const audio = audioRef.current
     if (!audio || !currentTrack) return
 
     const targetSrc = '/static/Zina.mp3'
-    // Ne recharger que si la source est différente
     if (!audio.src.endsWith('Zina.mp3')) {
       setLoading(true)
       setAudioLoaded(false)
@@ -104,7 +98,6 @@ export default function MusicApp() {
     }
   }, [currentTrack?.id])
 
-  // Play/pause
   useEffect(() => {
     const audio = audioRef.current
     if (!audio || !audioLoaded) return
@@ -118,7 +111,6 @@ export default function MusicApp() {
     }
   }, [isPlaying, audioLoaded, pause])
 
-  // Volume + Mute
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume
@@ -143,11 +135,6 @@ export default function MusicApp() {
         }, 500)
       }
     }
-  }
-
-  const handleStop = () => {
-    stop()
-    setCurrentTime(0)
   }
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
